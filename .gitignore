@@ -1,0 +1,7 @@
+build/
+.vscode/
+backups/
+node_modules/
+*.js
+yarn-error.log
+package-lock.json
