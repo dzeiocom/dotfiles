@@ -1,30 +1,25 @@
 {
-  "name": "dotfiles",
-  "version": "0.1.0",
-  "main": "build/cli.js",
-  "bin": {
-    "dotfiles": "./build/cli.js"
-  },
-  "license": "MIT",
-  "private": false,
-  "scripts": {
-    "start": "ts-node index.ts",
-    "build": "tsc"
-  },
-  "dependencies": {
-    "clear": "^0.1.0",
-    "cli-color": "^2.0.0",
-    "cli-progress": "^3.3.1",
-    "colors": "^1.4.0",
-    "enquirer": "^2.3.2",
-    "listr": "^0.14.3",
-    "ora": "^4.0.3"
-  },
-  "devDependencies": {
-    "@types/cli-progress": "^3.4.0",
-    "@types/node": "^13.1.1",
-    "ts-node": "^8.5.4",
-    "ts-node-dev": "^1.0.0-pre.44",
-    "typescript": "^3.7.4"
-  }
+	"name": "@dzeio/dotfiles",
+	"version": "1.0.0",
+	"main": "./dist/cjs/cli.js",
+	"types": "./dist/types/cli.d.ts",
+	"bin": {
+		"dotfiles": "./dist/cjs/cli.js"
+	},
+	"license": "MIT",
+	"scripts": {
+		"start": "ts-node src/cli.ts",
+		"build": "tsc",
+		"prepublishOnly": "tsc"
+	},
+	"dependencies": {
+		"colors": "^1.4.0",
+		"enquirer": "^2.3.2",
+		"listr": "^0.14.3"
+	},
+	"devDependencies": {
+		"@types/node": "^13.1.1",
+		"ts-node": "^8.5.4",
+		"typescript": "^3.7.4"
+	}
 }

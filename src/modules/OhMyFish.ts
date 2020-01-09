@@ -1,5 +1,5 @@
 import SimpleModule from "../SimpleModule"
-import FileInterface from "../FileInterface"
+import FileInterface from "../interfaces/FileInterface"
 import Requirements from "../Prerequises"
 import { execSync } from "child_process"
 

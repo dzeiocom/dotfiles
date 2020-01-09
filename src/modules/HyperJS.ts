@@ -1,6 +1,6 @@
 import SimpleModule from "../SimpleModule";
 import { getUserHome } from "../Functions";
-import FileInterface from "../FileInterface";
+import FileInterface from "../interfaces/FileInterface";
 
 export default class HyperJS extends SimpleModule {
 	files: FileInterface[] = [

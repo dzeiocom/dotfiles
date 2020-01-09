@@ -1,5 +1,5 @@
 import SimpleModule from "../SimpleModule"
-import FileInterface from "../FileInterface"
+import FileInterface from "../interfaces/FileInterface"
 import { getUserHome } from "../Functions"
 
 export default class Nano extends SimpleModule {

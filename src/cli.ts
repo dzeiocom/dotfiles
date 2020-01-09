@@ -1,16 +1,22 @@
 #!/usr/bin/env node
 console.clear()
 
+const pkg = require('../package.json')
+
+console.log(`[${pkg.name}] version ${pkg.version}`)
+
 import Logger from './Logger'
-import ModuleInterface from './ModuleInterface'
+import ModuleInterface from './interfaces/ModuleInterface'
 import Options from './Options'
 import { getModules } from './Functions'
 import ListI, { ListrInterface } from './interfaces/Listr'
+import Statics from './Statics'
 
 const logger = Logger.getInstance()
 const options = new Options()
 
-function getSelect(Select: any) {
+function getSelect() {
+	const { Select } = require('enquirer')
 	return new Select({
 		name: "dotfiles",
 		message: "Select the action to run",
@@ -31,6 +37,9 @@ function getSelect(Select: any) {
 				name: 'options',
 				message: 'Options'
 			},{
+				name: 'git',
+				message: 'Git'
+			},{
 				name: 'exit',
 				message: 'Exit'
 			}
@@ -39,7 +48,7 @@ function getSelect(Select: any) {
 }
 
 async function saveModule(moduleName: string, save = false): Promise<ListI> {
-	const md = `./modules/${moduleName}`
+	const md = `${__dirname}/modules/${moduleName}`
 	const module: ModuleInterface = new (await require(md).default)(moduleName)
 	if (save) {
 		return module.save()
@@ -49,12 +58,13 @@ async function saveModule(moduleName: string, save = false): Promise<ListI> {
 }
 
 async function bootstrap(): Promise<never> {
-	const { Select, MultiSelect } = await require('enquirer');
+	const { MultiSelect } = await require('enquirer');
 	const Listr: ListI = await require('listr')
+	console.log(`${__dirname}`)
 
 	let response: string = ""
 	try {
-		response = await getSelect(Select).run()
+		response = await getSelect().run()
 	} catch {
 		process.exit(process.exitCode)
 	}
@@ -96,6 +106,10 @@ async function bootstrap(): Promise<never> {
 		case "options":
 			await options.manager()
 			await bootstrap()
+			break
+		case "git":
+			console.log(`cd ${Statics.folder}`)
+			// execSync(`git push`)
 		default:
 			break;
 	}

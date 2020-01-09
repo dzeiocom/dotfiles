@@ -1,6 +1,7 @@
-import { getUserHome, getModules } from "./Functions"
-import fs, {promises as fsp} from "fs"
+import { getModules } from "./Functions"
+import fs, { promises as fsp } from "fs"
 import 'colors'
+import Statics from './Statics'
 
 const { MultiSelect, Select } = require('enquirer')
 
@@ -11,12 +12,19 @@ interface p {
 
 export default class Options {
 
-	private configFolder = `${getUserHome()}/.config/dzeio-dotfiles/`
+	private configFolder = Statics.folder
 	private configFile = `config.yml`
 
 	private location: string
 
 	private config: p
+
+	private static defaultReadme = `
+# Dotfiles
+
+_This dotfiles was generated using https://www.npmjs.com/package/@dzeio/dotfiles_
+	`
+
 
 	public constructor() {
 		this.location = `${this.configFolder}/${this.configFile}`
@@ -26,6 +34,7 @@ export default class Options {
 		} catch {
 			fs.mkdirSync(this.configFolder)
 			this.config = this.defaultConfig()
+			fs.writeFileSync(`${this.configFolder}/README.md`, Options.defaultReadme)
 			this.save()
 		}
 	}

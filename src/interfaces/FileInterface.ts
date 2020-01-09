@@ -1,4 +1,4 @@
-import Requirements from "./Prerequises";
+import Requirements from "../Prerequises";
 
 export default interface FileInterface {
 	displayName?: string,

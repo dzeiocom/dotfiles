@@ -1,9 +1,10 @@
-import ModuleInterface from "./ModuleInterface"
+import ModuleInterface from "./interfaces/ModuleInterface"
 import { copy, processCommand } from "./Functions"
-import FileInterface from "./FileInterface"
+import FileInterface from "./interfaces/FileInterface"
 import Requirements from "./Prerequises"
 import Logger from "./Logger"
 import ListI, { ListrInterface } from "./interfaces/Listr"
+import Statics from "./Statics"
 const Listr: ListI = require('listr')
 
 export default abstract class SimpleModule implements ModuleInterface {
@@ -23,7 +24,7 @@ export default abstract class SimpleModule implements ModuleInterface {
 
 	public async save(): Promise<ListI> {
 
-		const directory = `./backups/${this.moduleName}`
+		const directory = `${Statics.folder}/backups/${this.moduleName}`
 		const subTasks: ListrInterface[] = []
 
 		for (const file of this.files) {

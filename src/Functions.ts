@@ -50,7 +50,6 @@ async function processFile(src: string, dest: string) {
 export async function confirmOverride(filename: string): Promise<boolean> {
 	const doOverride = new Options().getConfig().override
 	if (typeof doOverride === "boolean" ) return doOverride
-	Statics.multibar.stop()
 	clear()
 	const resp = await new Confirm({
 		name: "override",
@@ -146,14 +145,22 @@ export async function processCommand(command: string, location: string, filename
 
 
 export async function getModules(): Promise<Array<string>> {
+	return ['Fish', 'HyperJS', 'Nano', 'OhMyFish', 'VSCode', 'Yarn']
 	const res = []
-	let els = await fs.readdir("./modules")
-	for (const el of els) {
-		res.push(
-			el.substr(0, el.length-3)
-		)
+	console.log(`${__dirname}/modules`)
+
+	try {
+		let els = await fs.readdir(`${__dirname}/modules`)
+		for (const el of els) {
+			res.push(
+				el.substr(0, el.length-3)
+			)
+		}
+		return res
+	} catch {
+		console.log(`${__dirname}/modules`)
+		throw new Error(`${__dirname}/modules`)
 	}
-	return res
 }
 
 export function capitalize(str: string) {

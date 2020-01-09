@@ -1,5 +1,4 @@
-import { SingleBar } from "cli-progress";
-import ListI from "./interfaces/Listr";
+import ListI from "./Listr"
 
 export default interface ModuleInterface {
 	moduleName?: string

@@ -1,7 +1,5 @@
-build/
 .vscode/
-backups/
+dist/
 node_modules/
-*.js
 yarn-error.log
 package-lock.json

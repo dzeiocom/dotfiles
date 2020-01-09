@@ -1,11 +1,10 @@
 import SimpleModule from "../SimpleModule";
-import fsSync, { promises as fs } from "fs";
+import fsSync from "fs";
 import { getUserHome } from "../Functions";
 
 import { execSync } from "child_process";
-import FileInterface from "../FileInterface";
+import FileInterface from "../interfaces/FileInterface";
 import Requirements from "../Prerequises";
-import 'colors'
 
 export default class VSCode extends SimpleModule {
 	files: FileInterface[] = [
