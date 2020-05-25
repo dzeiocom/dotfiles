@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 console.clear()
 
-const pkg = require('../package.json')
+import pkg from './package.alias.json'
+import 'colors'
 
-console.log(`[${pkg.name}] version ${pkg.version}`)
+console.log(`${pkg.name.white} > ${pkg.version.cyan}`)
 
 import Logger from './Logger'
 import ModuleInterface from './interfaces/ModuleInterface'
@@ -11,6 +12,8 @@ import Options from './Options'
 import { getModules } from './Functions'
 import ListI, { ListrInterface } from './interfaces/Listr'
 import Statics from './Statics'
+import Git from './Git'
+import inquirer from 'inquirer'
 
 const logger = Logger.getInstance()
 const options = new Options()
@@ -60,13 +63,16 @@ async function saveModule(moduleName: string, save = false): Promise<ListI> {
 async function bootstrap(): Promise<never> {
 	const { MultiSelect } = await require('enquirer');
 	const Listr: ListI = await require('listr')
-	console.log(`${__dirname}`)
 
 	let response: string = ""
 	try {
 		response = await getSelect().run()
 	} catch {
 		process.exit(process.exitCode)
+	}
+
+	if (response === "exit") {
+		return process.exit(0)
 	}
 
 	const config = options.getConfig()
@@ -108,7 +114,10 @@ async function bootstrap(): Promise<never> {
 			await bootstrap()
 			break
 		case "git":
-			console.log(`cd ${Statics.folder}`)
+			// console.log(`cd ${Statics.folder}`)
+			const git = new Git()
+			await git.hasChanges()
+			// await git.init()
 			// execSync(`git push`)
 		default:
 			break;

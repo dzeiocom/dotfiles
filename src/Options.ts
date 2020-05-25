@@ -2,6 +2,7 @@ import { getModules } from "./Functions"
 import fs, { promises as fsp } from "fs"
 import 'colors'
 import Statics from './Statics'
+import inquirer, { DistinctChoice } from "inquirer"
 
 const { MultiSelect, Select } = require('enquirer')
 
@@ -61,21 +62,28 @@ _This dotfiles was generated using https://www.npmjs.com/package/@dzeio/dotfiles
 	}
 
 	public async manager() {
-		const res = await new Select({
-			name: 'select',
-			message: 'Select an option',
+		const resp = await inquirer.prompt({
+			type: 'list',
+			name: 't',
+			message: 'Select an option'.white,
 			choices: [
-				'Quick backup elements',
-				'default file override',
+				{
+					name: 'Quick Backup Elements',
+					value: 'qbe'
+				},
+				{
+					name: 'Default file override',
+					value: 'dfo'
+				},
 				'Back'
 			]
-		}).run()
-		switch (res) {
-			case 'Quick backup elements':
+		})
+		switch (resp.t) {
+			case 'qbe':
 				await this.enabled()
 				break
 
-			case 'default file override':
+			case 'dfo':
 				await this.override()
 				break
 			default:
@@ -86,23 +94,43 @@ _This dotfiles was generated using https://www.npmjs.com/package/@dzeio/dotfiles
 
 	public async override() {
 		let config = this.getConfig()
-		const res = await new Select({
+		// const res = await new Select({
+		// 	name: 'select',
+		// 	message: 'Default Override action ?'.white,
+		// 	footer: `current: ${this.getConfig().override}`,
+		// 	choices: [
+		// 		{message: "Override", value: true},
+		// 		{message: "Ask", value: undefined},
+		// 		{message: "Skip", value: false}
+		// 	]
+		// }).run()
+		const res = await inquirer.prompt({
+			type: 'list',
 			name: 'select',
-			message: 'Default Override action ?',
-			footer: `current: ${this.getConfig().override}`,
+			message: 'Default Override action ?'.white,
+			default: this.getConfig().override,
 			choices: [
-				{message: "Override", value: true},
-				{message: "Ask", value: undefined},
-				{message: "Skip", value: false}
+				{
+					name: "Override",
+					value: true
+				},
+				{
+					name: "Ask",
+					value: undefined
+				},
+				{
+					name: "Skip",
+					value: false
+				}
 			]
-		}).run()
-		config.override = res
+		})
+		config.override = res.select
 		this.setConfig(config)
 		this.save()
 	}
 
 	public async enabled() {
-		let choices: Array<choice> = []
+		let choices: Array<{name: string, value: string}> = []
 		const els = await getModules()
 		let config = this.getConfig()
 		for (const value of els) {
@@ -111,20 +139,16 @@ _This dotfiles was generated using https://www.npmjs.com/package/@dzeio/dotfiles
 				value
 			})
 		}
-		const t = await new MultiSelect({
-			name: 'enabled',
-			message: 'Select wich one to Backup/Restore when selecting quick'.white,
-			initial: this.getConfig().enabled.filter((el) => els.includes(el)),
+
+		const t = await inquirer.prompt({
+			type: 'checkbox',
+			name: 't',
+			message: 'Select which one to Backup/Restore when selecting quick'.white,
 			choices,
-			footer: 'space to select, enter to confirm'
-		}).run()
-		config.enabled = t
+			default: this.getConfig().enabled.filter((el) => els.includes(el))
+		})
+		config.enabled = t.t
 		this.setConfig(config)
 		this.save()
 	}
-}
-
-interface choice {
-	name: string,
-	value: string
 }

@@ -35,3 +35,21 @@ Dzeio Save/Restore Menu:
 - Quick save
 - Manual save
 ```
+
+## Build it 🥇
+
+
+run the following
+```bash
+yarn
+```
+
+next you will have to change the file node_modules/enquirer/index.d.ts to [this](https://raw.githubusercontent.com/enquirer/enquirer/a128486736e20b439599d438ede2d92be737cadd/index.d.ts) else Typescript will show errors
+
+finnally run
+
+```bash
+yarn build
+```
+
+and you will be able to launch it from `dist/cjs/cli.js`

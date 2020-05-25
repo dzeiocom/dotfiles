@@ -5,7 +5,6 @@ import util from 'util'
 import readline from 'readline'
 import Options from './Options';
 import Logger from './Logger';
-import Statics from './Statics';
 
 const { Confirm } = require('enquirer')
 const exec = util.promisify(execSync)
@@ -145,6 +144,7 @@ export async function processCommand(command: string, location: string, filename
 
 
 export async function getModules(): Promise<Array<string>> {
+	// Temporary fix before the modules are externalized
 	return ['Fish', 'HyperJS', 'Nano', 'OhMyFish', 'VSCode', 'Yarn']
 	const res = []
 	console.log(`${__dirname}/modules`)
@@ -158,11 +158,33 @@ export async function getModules(): Promise<Array<string>> {
 		}
 		return res
 	} catch {
-		console.log(`${__dirname}/modules`)
 		throw new Error(`${__dirname}/modules`)
 	}
 }
 
 export function capitalize(str: string) {
 	return str[0].toUpperCase + str.substr(1).toLowerCase()
+}
+
+
+/*************************
+ *     Exec Wrapper      *
+ *************************/
+
+export async function cmdExist(cmd: string): Promise<boolean> {
+	try {
+		await exec(`which ${cmd} 2> /dev/null`)
+		return true
+	} catch {
+		return false
+	}
+}
+
+export function cmdExistSync(cmd: string): boolean {
+	try {
+		execSync(`which ${cmd} 2> /dev/null`)
+		return true
+	} catch {
+		return false
+	}
 }
